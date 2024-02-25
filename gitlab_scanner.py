@@ -1,4 +1,4 @@
-import requests, logging, os, argparse
+import requests, logging, os, argparse, datetime
 
 #############################CONFIG#############################
 # Can be created here: https://gitlab.com/-/user_settings/personal_access_tokens
@@ -36,7 +36,11 @@ def get_all_commits(repo_id:int) -> set[str]:
             
 
 def get_all_official_commits(repo_id:int) -> set[str]:
-    url = f"{gitlab_instance_url}/api/v4/projects/{repo_id}/repository/commits?all=true" # doesn't work, doesn't show dangling commits even if they can still got directly
+    three_years_ago = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=365*3)
+    timestamp = three_years_ago.isoformat()
+    # Only 3 years of events stored, so avoiding false positives of older commits which no longer
+    # have a stored event
+    url = f"{gitlab_instance_url}/api/v4/projects/{repo_id}/repository/commits?all=true&since={timestamp}"
     data = requests.get(url, headers=request_headers)
     datajson = data.json()
     commits = set()

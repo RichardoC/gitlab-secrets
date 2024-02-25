@@ -22,7 +22,7 @@ To get a list of basic options and switches use:
 python3 gitlab_scanner.py -h
 ```
 
-You can run this script either completely unauthenticated, or your generated API token by following [this guide](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html).
+You can run this script either completely unauthenticated if you are checking public repositories, or your generated API token by following [this guide](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html).
 
 The tokens need requires `read_api` scope.
 
@@ -42,6 +42,10 @@ python3 gitlab_scanner.py <organisation>/<repository>
 ```
 
 An example repository for testing is <https://gitlab.com/gitlab-secrets/gitlab-secrets>
+
+## Limitations
+
+This can only detect dangling commits from the last [3 years](https://docs.gitlab.com/ee/api/events.html#event-time-period-limit) due to the retention period on events in Gitlab.
 
 ## License
 
